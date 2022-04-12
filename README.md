@@ -15,9 +15,14 @@ The post All-Star stretch is arguably one of the most important
 [Authors](#authors)
 
 [Introduction](#introduction)
-[Part 1. Web Scraping](#1. web scraping)
+[Part 1. Web Scraping](#1-web-scraping)
 
-[Part 2. Data Cleaning](#2. data cleaning)
+[Part 2. Data Cleaning](#2-data-cleaning)
+
+[Part 3. Exploratory Data Analysis](#3-exploratory-data-analysis)
+[Part 4. Regression Modeling](#4-regression-modeling)
+
+[Findings](#findings)
 
 ## Authors
 
@@ -149,7 +154,7 @@ games (L_15) from the model, as they were too highly correlated
 with other variables in the model.
 ![correlation matrix](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/corr_matrix.png)
 <p align = "center">
-Fig.1 - 4K Mountains Wallpaper
+Figure 1. Pearson's correlation matrix
 </p>
 
 Looking at the distribution of the remaining variables, no variables 
@@ -159,7 +164,14 @@ added variation in the data that may cause an issue with our
 predictions, as they both had unusual game schedules due to the 
 COVID-19 pandemic.
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/pairplot.png)
+<p align = "center">
+Figure 2. Four Factors data pairplots
+</p>
+
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/pairplot2.png)
+<p align = "center">
+Figure 3. Last 15 data pairplots
+</p>
 
 Notice the linear relationships between predictors/outcome variables. Time to do some modeling!
 ## 4. Regression Modeling
@@ -199,6 +211,9 @@ a MSE = 14.9085. This means that based on our model, predictions
 will be off on average 3.86 wins.
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/r2_mse_plots.png)
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/r2_mse_rpd_plot.png)
+<p align = "center">
+Figure 4. Nine NBA season model evaluation
+</p>
 
 **Partial Least Squares NOT using the previous 2 seasons 
 (2019–2020 and 2020–2021):**
@@ -212,6 +227,9 @@ MSE = 10.5266. Based on this model, predictions will be off on
 average 3.24 wins.
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/optimize_r2_mse.png)
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/optimize_r2_mse_rpd.png)
+<p align = "center">
+Figure 5. Seven NBA season model evaluation
+</p>
 
 ## Findings
 
