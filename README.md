@@ -99,3 +99,129 @@ season-to-break four factors metrics and the other with metrics for
 the 15-ish games heading into break. The third table has post All-Star 
 break metrics from which we will extract wins to use in our 
 regression model.
+## 2. Data Cleaning
+
+We will first read in our three csv files as data frames using 
+pandas. For each data frame we will check and validate the column 
+data types, null values in each column, and season counts. 
+Everything seems to look as expected. Then, we drop unnecessary 
+columns and rename a few others for more clear interpretation.
+```python
+ff = pd.read_csv("four_factors.csv")
+last_15 = pd.read_csv("last_15.csv")
+post_as = pd.read_csv("post_as.csv")
+
+# Check data types, null values, Season counts
+last_15.dtypes
+last_15.isnull().sum()
+last_15['Season'].value_counts()
+
+# Drop + rename columns
+last_15.rename(columns={'GP': 'GP_15', 'W': 'W_15', 'L': 'L_15', 'WIN%': 'WIN%_15'}, inplace=True)
+last_15.drop(columns=['TeamID', 'MIN', 'EOFFRTG', 'EDEFRTG', 'ENETRTG'], inplace=True)
+```
+To combine the tables, we’ll use pd.merge() twice utilizing an 
+inner join on the “Team” and “Season” columns. Before the second 
+merge, the last 30 rows of the data frame corresponding to the 
+current 2021–2022 season will be split off and saved as itself. 
+This “curr_season” data frame will be used at the end to make 
+predictions on how many wins teams this season will have.
+```python
+# Merge all dfs, split current NBA season off as that will be used as a test case
+season_stats = pd.merge(ff, last_15, how='inner', on=['Team','Season'])
+curr_season = season_stats.iloc[-30:]
+past_seasons = season_stats.iloc[:-30]
+past_season_stats = pd.merge(past_seasons, post_as, how='inner', on=['Team', 'Season'])
+past_season_stats.to_csv('past_season_stats.csv', index=False)
+curr_season.to_csv('curr_season_stats.csv', index=False)
+```
+## 3. Exploratory Data Analysis
+
+When looking at our data, we noticed many variables that were highly 
+correlated. We decided to drop Number of Wins (W), Number of 
+Losses (L), Minutes Played (MIN), Number of Wins in the most 
+recent 15 games (W_15), Number of Losses in the most recent 15 
+games (L_15) from the model, as they were too highly correlated 
+with other variables in the model.
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/corr_matrix.png)
+
+Looking at the distribution of the remaining variables, no variables 
+stood out enough to be removed from the model. However, we found 
+that the previous two seasons (2019–2020 and 2020–2021) season 
+added variation in the data that may cause an issue with our 
+predictions, as they both had unusual game schedules due to the 
+COVID-19 pandemic.
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/pairplot.png)
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/pairplot2.png)
+
+Notice the linear relationships between predictors/outcome variables. Time to do some modeling!
+## 4. Regression Modeling
+
+We decided to use a Partial Least Squares Regression, as it is 
+especially useful when your predictors are highly collinear. In our 
+case, many predictors we wanted to use were highly correlated.
+
+__Predictor Variables__: Games Played (GP), Win Percentage (WIN%), 
+Expected Field Goal Percentage (EFG%), Free Throw Rate (FTA RATE), 
+Turnover Percentage (TOV%), Offensive Rebounding Percentage (OREB%), 
+Opponent Expected Field Goal Percentage (OPP EFG%), 
+Opponent Free Throw Rate (OPP FTA RATE), Opponent 
+Turnover Percentage (OPP TOV%), Opponent Offensive Rebounding 
+Percentage (OPP OREB%), Games Played for the previous 
+month (GP_15), Win Percentage for the previous month (WIN%_15), 
+Offensive Rating for the previous month (OFFRTG_15), 
+Defensive Rating for the previous month (DEFRTG_15), 
+Net Rating for the previous month (NETRTG_15)
+
+__Outcome Variable__: Wins Post All-Star Break (W_Post)
+
+Our model was built using Partial Least Squares Regression and 
+Cross Validation to make the best fitting model. Next, we optimized 
+our model by testing the number of variables in our model to 
+minimize the Mean Squared Error (MSE) and maximize the R Squared 
+(R2). Our plots of the MSE and R2 are used to check that our model 
+is working effectively. Finally, we plotted our regression line vs 
+the expected regression line (y vs y) to compare our model to the 
+theoretical best model.
+
+**Partial Least Squares using the past 9 seasons:**
+
+In the model, the optimal number of variables left in the model was 
+found to be only 3 variables, leaving us with an R2 = 0.5113 and 
+a MSE = 14.9085. This means that based on our model, predictions 
+will be off on average 3.86 wins.
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/r2_mse_plots.png)
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/r2_mse_rpd_plot.png)
+
+**Partial Least Squares NOT using the previous 2 seasons 
+(2019–2020 and 2020–2021):**
+
+As we noted earlier, there are two seasons affected by the COVID-19 
+pandemic, 2019–2020 and 2020–2021. We decided to remove those 
+seasons from the model to see if they are affecting it.
+In the model, the optimal number of variables left in the model was 
+found to be 6 variables, leaving us with a R2 = 0.5782 and a 
+MSE = 10.5266. Based on this model, predictions will be off on 
+average 3.24 wins.
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/optimize_r2_mse.png)
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/optimize_r2_mse_rpd.png)
+
+## Findings
+
+Not using the previous 2 seasons (2019–2020 and 2020–2021) 
+helped improve our model, as this year is expected to be more of a 
+typical year in terms of games played after the All-Star Break. 
+With this PLS model trained on 7 NBA seasons of data, we are 
+ideally able to predict post All-Star break wins within ~3 wins. 
+Let’s try it out.
+
+**Final 2021-2022 Season Projections:**
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/final_predictions.png)
+
+__Key__: Team (NBA Team Name), G_Left (number of games left in the 
+season), Pred_Wins (teams predicted number of wins in their 
+remaining games), Pred_Win% (teams predicted win percentage in 
+their remaining games), Pred_Total_W (teams current wins + predicted 
+wins)
+
+Thank you for reading!
