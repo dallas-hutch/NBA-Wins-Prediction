@@ -15,6 +15,10 @@ The post All-Star stretch is arguably one of the most important
 [Authors](#authors)
 
 [Introduction](#introduction)
+[Part 1. Web Scraping](#1. web scraping)
+
+[Part 2. Data Cleaning](#2. data cleaning)
+
 ## Authors
 
 - [@Dallas Hutchinson](https://github.com/dallas-hutch)
@@ -143,7 +147,11 @@ Losses (L), Minutes Played (MIN), Number of Wins in the most
 recent 15 games (W_15), Number of Losses in the most recent 15 
 games (L_15) from the model, as they were too highly correlated 
 with other variables in the model.
-![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/corr_matrix.png)
+![correlation matrix](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/corr_matrix.png)
+
+|:--:|
+
+| <b>Pearson's Correlation Matrix</b>|
 
 Looking at the distribution of the remaining variables, no variables 
 stood out enough to be removed from the model. However, we found 
@@ -216,6 +224,7 @@ ideally able to predict post All-Star break wins within ~3 wins.
 Let’s try it out.
 
 **Final 2021-2022 Season Projections:**
+
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/final_predictions.png)
 
 __Key__: Team (NBA Team Name), G_Left (number of games left in the 
