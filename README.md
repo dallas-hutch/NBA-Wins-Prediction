@@ -148,10 +148,9 @@ recent 15 games (W_15), Number of Losses in the most recent 15
 games (L_15) from the model, as they were too highly correlated 
 with other variables in the model.
 ![correlation matrix](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/corr_matrix.png)
-
-|:--:|
-
-| <b>Pearson's Correlation Matrix</b>|
+<p align = "center">
+Fig.1 - 4K Mountains Wallpaper
+</p>
 
 Looking at the distribution of the remaining variables, no variables 
 stood out enough to be removed from the model. However, we found 
