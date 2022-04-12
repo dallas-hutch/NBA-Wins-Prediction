@@ -61,9 +61,11 @@ The first slice of team data we want is Four Factors stats for each
 team Pre All-Star break. Four Factors stats are derived metrics 
 focused on measuring a team’s strengths and weaknesses related to 
 shooting, turnovers, free throws, and rebounding.
-
-<script src="https://gist.github.com/dallas-hutch/b3f4bb600c74b923d8bf6e77a01a05ea.js"></script>
-
+```python
+datefrom = [''] * 10
+columns_ff = ["TeamID","Team","GP","W","L","WIN%","MIN","EFG%","FTA RATE","TOV%","OREB%","OPP EFG%","OPP FTA RATE","OPP TOV%","OPP OREB%"]
+ff_stats = pull_stats(seasons, datefrom, 'Four+Factors', 'Pre+All-Star', 14, columns_ff)
+```
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/ff_table.png)
 
 This looks right, 30 teams x 10 NBA seasons = 300 rows with the 
@@ -73,10 +75,10 @@ break. We will try to grab the ~15 games of metrics per team based
 on the date of the All-Star break that particular season. If a team 
 is surging (or tanking) headed into the break, that will definitely 
 influence how a team may perform post-break.
-
-<script src="https://gist.github.com/dallas-hutch/b7222652b798e95141f9766ae4ea4e59.js"></script>
-
-<insert last15_table image>
+```python
+last_15 = pull_stats(seasons, as_break_dates, 'Advanced', 'Pre+All-Star', 12, columns_last15)
+```
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/last15_table.png)
 
 The “last_15” table looks to check out too. The final slice of data 
 that’s needed is our actual target or outcome variable. So far we 
@@ -84,10 +86,10 @@ have just scraped pre All-Star break data. But we are trying to
 predict post All-Star break wins. Let’s pull some basic post 
 All-Star break stats including wins for the past 10 seasons 
 (minus the ongoing season).
-
-<script src="https://gist.github.com/dallas-hutch/a2bb5e710541aa8bf180b161944dc1ce.js"></script>
-
-<insert post_as_table image>
+```python
+post_as = pull_stats(seasons[0:9], datefrom, 'Base', 'Post+All-Star', 5, columns_post_as)
+```
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/post_as_table.png)
 
 Looks good! 270 rows makes sense since the 2021–2022 season does 
 not have any post All-Star break data yet. Let’s save these three 
