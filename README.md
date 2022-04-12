@@ -15,11 +15,13 @@ The post All-Star stretch is arguably one of the most important
 [Authors](#authors)
 
 [Introduction](#introduction)
+
 [Part 1. Web Scraping](#1-web-scraping)
 
 [Part 2. Data Cleaning](#2-data-cleaning)
 
 [Part 3. Exploratory Data Analysis](#3-exploratory-data-analysis)
+
 [Part 4. Regression Modeling](#4-regression-modeling)
 
 [Findings](#findings)
@@ -28,7 +30,6 @@ The post All-Star stretch is arguably one of the most important
 
 - [@Dallas Hutchinson](https://github.com/dallas-hutch)
 - [@Andrew Marion](https://github.com/andrewmarion)
-
 
 ## Introduction
 Today, 02/24/2022, the end of the All-Star Break, we would like
