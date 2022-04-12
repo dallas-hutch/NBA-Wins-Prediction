@@ -53,7 +53,7 @@ shooting, turnovers, free throws, and rebounding.
 
 <script src="https://gist.github.com/dallas-hutch/b3f4bb600c74b923d8bf6e77a01a05ea.js"></script>
 
-<insert ff_table image>
+![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/ff_table.png)
 
 This looks right, 30 teams x 10 NBA seasons = 300 rows with the 
 columns labelled appropriately. The next slice of data will try to 
