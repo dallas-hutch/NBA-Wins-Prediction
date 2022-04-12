@@ -170,6 +170,7 @@ Figure 2. Four Factors data pairplots
 </p>
 
 <br/>
+
 ![alt text](https://github.com/dallas-hutch/NBA-Wins-Prediction/blob/main/images/pairplot2.png)
 <p align = "center">
 Figure 3. Last 15 data pairplots
