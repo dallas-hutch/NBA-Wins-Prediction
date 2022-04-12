@@ -43,9 +43,20 @@ to the NBA API for a specific endpoint based on the filters given,
 stores the table result set and then combines each into a data frame. 
 A “season” column is also added to keep track of which NBA season 
 each table is coming from.
-
-<script src="https://gist.github.com/dallas-hutch/5475ee6c0ccc56d0221c12c934a87637.js"></script>
-
+```python
+def pull_stats(seasons, datefrom, measuretype, segment, numcol, columns):
+    dfs = []
+    for season, date in zip(seasons, datefrom):
+        url = "https://stats.nba.com/stats/leaguedashteamstats?Conference=&DateFrom={}&DateTo=&Division=&GameScope=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType={}&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season={}&SeasonSegment={}&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision="
+        res = requests.get(url=url.format(date, measuretype, season, segment), headers=headers)
+        res.raise_for_status()
+        data = res.json()['resultSets'][0]['rowSet']
+        extract = [data[i][0:numcol+1] for i in range(len(data))]
+        df = pd.DataFrame(extract, columns=columns)
+        df['Season'] = season
+        dfs.append(df)
+    return pd.concat(dfs, sort=False)
+```
 The first slice of team data we want is Four Factors stats for each 
 team Pre All-Star break. Four Factors stats are derived metrics 
 focused on measuring a team’s strengths and weaknesses related to 
